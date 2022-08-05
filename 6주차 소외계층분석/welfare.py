@@ -1,8 +1,15 @@
-"""고용, 임금으로 알아본 국가별 저소득층 복지 분석을 위한 모듈"""
+# 국가별 저소득층 복지 분석을 위한 모듈
 
+"""scrap(url, xpath, tag, cls_name)
+Scrap by a given xpath or a html tag with class name
 
+[parameter]
+url : url address
+xpath : xpath value
+tag : html tag value
+cls_name : html tag's class name
+"""
 def scrap(url: str, xpath=None, tag=None, cls_name=None):
-	"""webscraping by a given xpath or a html tag with class name"""
 	try:
 		from selenium import webdriver
 		from bs4 import BeautifulSoup
@@ -50,12 +57,15 @@ def scrap(url: str, xpath=None, tag=None, cls_name=None):
 		return article_title, video_view
 
 
+"""mkWordCloud(context, except_kwrd, filename)
+Make WordCloud image
+
+[parameter]
+context : string list of text
+except_kwrd : keyword list has to be excepted from context
+filename : png file name
+"""
 def mkWordCloud(context=None, except_kwrd=None, filename='wcimg'):
-	"""make WordCloud image
-	context : text string list
-	except_kwrd : keyword list has to be excepted from context
-	filename : png file name
-	"""
 	try:
 		import matplotlib.pyplot as plt
 		import platform
@@ -65,7 +75,7 @@ def mkWordCloud(context=None, except_kwrd=None, filename='wcimg'):
 	except ModuleNotFoundError as e:
 		print(e)
 
-	# hangeul font path
+	# hangeul font path by OS
 	if platform.system() == 'Windows':
 		path = r'c:\Windows\Fonts\malgun.ttf'
 	elif platform.system() == 'Darwin':  # Mac
@@ -95,17 +105,29 @@ def mkWordCloud(context=None, except_kwrd=None, filename='wcimg'):
 	plt.axis('off')
 	plt.imshow(wc)
 	plt.show()
+	plt.close()
 
 
-def sendQuery(csv_file, hostname, username, passwd, dbname, table_name):
-	"""send insert queries to database by csv file"""
-	# open and read csv data
+"""sendQuery(csv_file, hostname, username, passwd, dbname, table_name)
+Send queries to database by csv file
+
+[parameter]
+csv_file : [csv file path + ] csv file name
+hostname : database host name 
+username : database user name
+passwd database password
+dbname : database name
+tbname : database table name
+"""
+def sendQuery(csv_file, hostname, username, passwd, dbname, tbname):
 	try:
 		import pymysql
 		import csv
 		from pymysql import OperationalError
 	except ModuleNotFoundError as e:
 		print(e)
+
+	# open and read csv data
 	file = open(csv_file, mode='r', encoding='utf-8')
 	data = csv.reader(file)
 	header = next(data)
@@ -116,14 +138,14 @@ def sendQuery(csv_file, hostname, username, passwd, dbname, table_name):
 	db = conn.cursor(pymysql.cursors.DictCursor)
 	db.execute('USE '+dbname)
 	
-	# send insert queries
+	# send <insert into ~ values> queries
 	if db.rowcount == 0:
 		for row in data:
 			row = str(row).lstrip('[')
 			row = row.rstrip(']')
 			db.execute('set foreign_key_checks=0')
 			try:
-				db.execute(f'INSERT INTO {table_name}({", ".join(header)}) VALUES ({row})')
+				db.execute(f'INSERT INTO {tbname}({", ".join(header)}) VALUES ({row})')
 			except OperationalError as e:
 				print(e)
 				file.close()
@@ -136,8 +158,17 @@ def sendQuery(csv_file, hostname, username, passwd, dbname, table_name):
 	conn.close()
 
 
-def getData(hostname, username, passwd, dbname, table_name):
-	"""return pandas DataFrame from database"""
+"""getData(hostname, username, passwd, dbname, tbname)
+Get data from database and return pandas DataFrame object
+
+[parameter]
+hostname : database host name
+username : database user name
+passwd : database password
+dbname : database name
+tbame : database table name
+"""
+def getData(hostname, username, passwd, dbname, tbname):
 	try:
 		import pandas as pd
 		import pymysql
@@ -148,7 +179,7 @@ def getData(hostname, username, passwd, dbname, table_name):
 						   password=passwd, database=dbname, charset='utf8')
 	db = conn.cursor(pymysql.cursors.DictCursor)
 	db.execute('USE '+dbname)
-	db.execute(f'SELECT * FROM {table_name}')
+	db.execute(f'SELECT * FROM {tbname}')
 	data = db.fetchall()
 	data = pd.DataFrame(data)
 	db.close()
@@ -156,32 +187,44 @@ def getData(hostname, username, passwd, dbname, table_name):
 	return data
 
 
-def plotgraph(data, title, xlabel, ylabel, save_name):
+"""plotgraph(data, title, xlabel, ylabel, filename)
+Show plot graph and save a png file
+
+[parameter]
+data : pandas DataFrame object
+title : title on a plot graph
+xlabel : xlabel on a plot graph
+ylabel : ylabel on a plot graph
+filename : img file name for save
+"""
+def plotgraph(data, title: str, xlabel: str, ylabel: str, filename: str):
 	try:
-		import numpy as np
 		import platform
 		import matplotlib.pyplot as plt
-		from matplotlib import font_manager as fm, rc
 	except ModuleNotFoundError as e:
 		print(e)
 
+	# hangeul font settings on the graph by OS
 	if platform.system() == 'Windows':
-		font_fname = r'c:\Windows\Fonts\malgun.ttf'
+		plt.rc('font', family='Malgun Gothic')
 	elif platform.system() == 'Darwin':
-		font_fname = r'/System/Library/Fonts/AppleGothic'
+		plt.rc('font', family='AppleGothic')
 	else:
-		font_fname = r'/usr/share/fonts/truetype/name/NanumMyeongjo.ttf'
-
-	font_family = fm.FontProperties(fname=font_fname).get_name()
-	plt.rcParams['font.family']=font_family
+		plt.rc('font', family='NanumMyeongjo')
 
 	plt.figure(figsize=(10, 6), layout='constrained')
 	for i in range(len(data)):
 		plt.plot(data.iloc[i])
-	plt.title(title, fontsize=20, pad=10)
+	
+	# optional settings
+	plt.title(title, size=20, pad=10)
 	plt.margins(0.1)
 	plt.xticks(rotation=45)
-	plt.xlabel(xlabel, fontsize=15)
-	plt.ylabel(ylabel, fontsize=15)
-	plt.legend(data.index, loc=2);
-	# plt.savefig(f'{save_name}', dpi=200);
+	plt.xlabel(xlabel, size=15)
+	plt.ylabel(ylabel, size=15)
+	plt.legend(data.index, loc=2)
+
+	# save a img file, show and close the plot
+	plt.savefig(f'{filename}', dpi=200)
+	plt.show()
+	plt.close()
