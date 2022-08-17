@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Interview_the_Titanic</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="titanic_with_r_files/libs/clipboard/clipboard.min.js"></script>
+<script src="titanic_with_r_files/libs/quarto-html/quarto.js"></script>
+<script src="titanic_with_r_files/libs/quarto-html/popper.min.js"></script>
+<script src="titanic_with_r_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="titanic_with_r_files/libs/quarto-html/anchor.min.js"></script>
+<link href="titanic_with_r_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="titanic_with_r_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="titanic_with_r_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="titanic_with_r_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="titanic_with_r_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Interview_the_Titanic</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Ⅰ. Summary</h2>
+<section id="story-of-the-titanic" class="level3">
+<h3 class="anchored" data-anchor-id="story-of-the-titanic">Story of the Titanic</h3>
+<p><a href="https://www.greelane.com/ko/인문학/역사와-문화/titanic-timeline-1779210">타이타닉호 침몰의 타임라인</a> 참조</p>
+<ul>
+<li>1912년 4월 15일 2,229명 중 705명 만을 남기고 침몰</li>
+<li>가라앉는데 걸린 시간 2시간 40분</li>
+<li>프랑스 Cherbourg항을 시작으로 아일랜드의 Queenstown항으로 가는 여정</li>
+<li>Mackay-Bennett, Carpathis호로 인해 생존자들 뉴욕 도착(1912.4.18)</li>
+<li>타이타닉호의 잔해를 발견한 사람들ㅡDr.Robert Ballard 원정대(1985.9.1)</li>
+</ul>
+<p><code>때로는 결측값과 기록된 값의 차이를 만드는 것이 무엇인지 알고 싶은 경우가 있다. ㅡ R을 활용한 데이터 과학</code></p>
+<p>다양한 결측값 발생 원인들</p>
+<ul>
+<li>설문 응답자의 실수로 답변 누락</li>
+<li>민감한 질문에 대한 불응답</li>
+<li>측정 장비 문제</li>
+<li>연구자 측에서의 잘못으로 누락</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="data-preview" class="level2">
+<h2 class="anchored" data-anchor-id="data-preview">Ⅱ. Data Preview</h2>
+<section id="a.-자료-유형-파악하기" class="level3">
+<h3 class="anchored" data-anchor-id="a.-자료-유형-파악하기">a. 자료 유형 파악하기</h3>
+<ul>
+<li>종속 변수 : Age, Cabin, Embarked, Fare</li>
+<li>독립 변수 : 종속변수 데이터를 제외한 나머지 데이터들</li>
+<li>연속형 변수 : PassengerId, Age, Fare</li>
+<li>범주형 변수 : Survived, Pclass(순위척도), Name, Sex, Age, SibSp, Parch, Ticket, Cabin, Embarked</li>
+</ul>
+<p>나이는 연속형 자료지만 10, 20대처럼 연령대로 구분하면 범주형 중에서도 *순위척도가 될 수 있다.</p>
+<p>*순위척도 : 숫자라서 연속형 자료 같지만 평균을 내려고 하면 낼 수 없는 데이터<br>
+예) 30대 연령 그룹이 존재하지 않는 데이터에서 20대 30명, 40대 30명이라고 해서 해당 데이터의 평균을 30대라고 할 수 없다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>titanic <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'titanic.csv'</span>, <span class="at">header =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(titanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   1309 obs. of  12 variables:
+ $ PassengerId: int  1 2 3 4 5 6 7 8 9 10 ...
+ $ Survived   : int  0 1 1 1 0 0 0 0 1 1 ...
+ $ Pclass     : int  3 1 3 1 3 3 1 3 3 2 ...
+ $ Name       : Factor w/ 1307 levels "Abbing, Mr. Anthony",..: 156 287 531 430 23 826 775 922 613 855 ...
+ $ Sex        : Factor w/ 2 levels "female","male": 2 1 1 1 2 2 2 2 1 1 ...
+ $ Age        : num  22 38 26 35 35 NA 54 2 27 14 ...
+ $ SibSp      : int  1 1 0 1 0 0 0 3 0 1 ...
+ $ Parch      : int  0 0 0 0 0 0 0 1 2 0 ...
+ $ Ticket     : Factor w/ 929 levels "110152","110413",..: 721 817 915 66 650 374 110 542 478 175 ...
+ $ Fare       : num  7.25 71.28 7.92 53.1 8.05 ...
+ $ Cabin      : Factor w/ 187 levels "","A10","A11",..: 1 108 1 72 1 1 165 1 1 1 ...
+ $ Embarked   : Factor w/ 4 levels "","C","Q","S": 4 2 4 4 4 3 4 4 4 2 ...</code></pre>
+</div>
+</div>
+</section>
+<section id="b.-결측-데이터-처리-및-패턴-파악" class="level3">
+<h3 class="anchored" data-anchor-id="b.-결측-데이터-처리-및-패턴-파악">b. 결측 데이터 처리 및 패턴 파악</h3>
+<p>Embarked 데이터 결측값(2개)과 Cabin 데이터 결측값(1014개)은 그대로 두어도 무방할 것 같아서 예측값을 채우지 않았다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(titanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  PassengerId      Survived          Pclass     
+ Min.   :   1   Min.   :0.0000   Min.   :1.000  
+ 1st Qu.: 328   1st Qu.:0.0000   1st Qu.:2.000  
+ Median : 655   Median :0.0000   Median :3.000  
+ Mean   : 655   Mean   :0.3774   Mean   :2.295  
+ 3rd Qu.: 982   3rd Qu.:1.0000   3rd Qu.:3.000  
+ Max.   :1309   Max.   :1.0000   Max.   :3.000  
+                                                
+                               Name          Sex           Age       
+ Connolly, Miss. Kate            :   2   female:466   Min.   : 0.17  
+ Kelly, Mr. James                :   2   male  :843   1st Qu.:21.00  
+ Abbing, Mr. Anthony             :   1                Median :28.00  
+ Abbott, Master. Eugene Joseph   :   1                Mean   :29.88  
+ Abbott, Mr. Rossmore Edward     :   1                3rd Qu.:39.00  
+ Abbott, Mrs. Stanton (Rosa Hunt):   1                Max.   :80.00  
+ (Other)                         :1301                NA's   :263    
+     SibSp            Parch            Ticket          Fare        
+ Min.   :0.0000   Min.   :0.000   CA. 2343:  11   Min.   :  0.000  
+ 1st Qu.:0.0000   1st Qu.:0.000   1601    :   8   1st Qu.:  7.896  
+ Median :0.0000   Median :0.000   CA 2144 :   8   Median : 14.454  
+ Mean   :0.4989   Mean   :0.385   3101295 :   7   Mean   : 33.295  
+ 3rd Qu.:1.0000   3rd Qu.:0.000   347077  :   7   3rd Qu.: 31.275  
+ Max.   :8.0000   Max.   :9.000   347082  :   7   Max.   :512.329  
+                                  (Other) :1261   NA's   :1        
+             Cabin      Embarked
+                :1014    :  2   
+ C23 C25 C27    :   6   C:270   
+ B57 B59 B63 B66:   5   Q:123   
+ G6             :   5   S:914   
+ B96 B98        :   4           
+ C22 C26        :   4           
+ (Other)        : 271           </code></pre>
+</div>
+</div>
+<p>Fare 데이터 결측값(1개)은 동일한 조건(승선등급 3, 60.5세, 동반 탑승객 0, 남성)의 평균 요금으로 대체</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(<span class="fu">is.na</span>(titanic<span class="sc">$</span>Fare))  <span class="co"># 1044행</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1044</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fare_condition <span class="ot">&lt;-</span> titanic[titanic<span class="sc">$</span>Pclass <span class="sc">==</span> <span class="dv">3</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>Age <span class="sc">&gt;=</span> <span class="dv">60</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>Age <span class="sc">&lt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>Sex <span class="sc">==</span> <span class="st">"male"</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>SibSp <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>Parch <span class="sc">==</span> <span class="dv">0</span>,]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>fare_condition <span class="ot">&lt;-</span> fare_condition[<span class="fu">complete.cases</span>(fare_condition),]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>titanic<span class="sc">$</span>Fare[<span class="dv">1044</span>] <span class="ot">&lt;-</span> <span class="fu">median</span>(fare_condition<span class="sc">$</span>Fare)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>titanic<span class="sc">$</span>Fare[<span class="dv">1044</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.99375</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>VIM<span class="sc">::</span><span class="fu">aggr</span>(titanic, <span class="at">prop=</span><span class="cn">TRUE</span>, <span class="at">numbers=</span><span class="cn">TRUE</span>, <span class="at">sortVar=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="titanic_with_r_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Variables sorted by number of missings: 
+    Variable     Count
+         Age 0.2009167
+ PassengerId 0.0000000
+    Survived 0.0000000
+      Pclass 0.0000000
+        Name 0.0000000
+         Sex 0.0000000
+       SibSp 0.0000000
+       Parch 0.0000000
+      Ticket 0.0000000
+        Fare 0.0000000
+       Cabin 0.0000000
+    Embarked 0.0000000</code></pre>
+</div>
+</div>
+<p>Cabin 데이터 결측값은 첫번째 항구였던 Cherbourg와 마지막 항구였던 Queenstown에서 많았다.<br>
+그러나 Cabin 데이터 결측값은 선원 또는 객실 승무원이 아니어서 그럴 가능성도 있다.</p>
+<p>당시 탑승 선원은 855명으로 추정, 그중 객실 승무원(스튜어드)은 322명, 여성 승무원 23명으로 기록</p>
+<p><a href="https://namu.wiki/w/RMS%20%ED%83%80%EC%9D%B4%ED%83%80%EB%8B%89">타이타닉 승무원</a> 나무위키 문서 참조</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>VIM<span class="sc">::</span><span class="fu">matrixplot</span>(titanic, <span class="at">sortby=</span><span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="titanic_with_r_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Age 데이터 결측값 분포는 여자 &lt; 남자, Pclass = 3등급, 형제자매_SibSp = 0</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>VIM<span class="sc">::</span><span class="fu">matrixplot</span>(titanic, <span class="at">sortby=</span><span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="titanic_with_r_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="c.-다중대체법-시뮬레이션" class="level3">
+<h3 class="anchored" data-anchor-id="c.-다중대체법-시뮬레이션">c.&nbsp;다중대체법 시뮬레이션?</h3>
+<p>익명을 원해서 일부러 기록을 피했다면?<br>
+일반 사람의 범주가 아니라면?<br>
+데이터를 꼭 채워넣어야만 할까?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># library(mice)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ini &lt;- mice(titanic, maxit=0)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># meth &lt;- ini$method</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># meth["Age"] &lt;- "norm.predict"</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># imp &lt;- mice(titanic, method=meth)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+</section>
+<section id="생존에-영향을-미쳤던-변수들" class="level2">
+<h2 class="anchored" data-anchor-id="생존에-영향을-미쳤던-변수들">Ⅲ. 생존에 영향을 미쳤던 변수들</h2>
+<section id="a.-승선항은-생존-여부에-영향력이-있었다" class="level3">
+<h3 class="anchored" data-anchor-id="a.-승선항은-생존-여부에-영향력이-있었다">a. 승선항은 생존 여부에 영향력이 있었다</h3>
+<p>Survived는 살았다, 아니다의 이분형 범주이어서 이항 로지스틱 회귀분석으로 분석 시도.<br>
+로지스틱 회귀분석은 결측 데이터를 자동으로 삭제한다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modeldata)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>titan.logis <span class="ot">&lt;-</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> <span class="sc">+</span> Sex <span class="sc">+</span> Embarked, <span class="at">data=</span>titanic, <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(titan.logis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = Survived ~ +Sex + Embarked, family = binomial(link = "logit"), 
+    data = titanic)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.1157  -0.4897  -0.4897   0.6564   2.1282  
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  13.5661   378.5929   0.036    0.971    
+Sexmale      -3.4857     0.1631 -21.365   &lt;2e-16 ***
+EmbarkedC   -11.4408   378.5929  -0.030    0.976    
+EmbarkedQ   -12.2354   378.5930  -0.032    0.974    
+EmbarkedS   -12.1407   378.5929  -0.032    0.974    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1735.1  on 1308  degrees of freedom
+Residual deviance: 1064.9  on 1304  degrees of freedom
+AIC: 1074.9
+
+Number of Fisher Scoring iterations: 12</code></pre>
+</div>
+</div>
+</section>
+<section id="b.-승객-구분에-따른-생존율-차이는-있다" class="level3">
+<h3 class="anchored" data-anchor-id="b.-승객-구분에-따른-생존율-차이는-있다">b. 승객 구분에 따른 생존율 차이는 있다</h3>
+<p>생존여부와 승객 등급이라는 두 범주형 변수가 서로 관련이 있는지 교차분석(독립성검정) 해 본 결과 3등급과 승무원의 생존율이 낮았음을 알 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Titanic.margin <span class="ot">&lt;-</span> <span class="fu">margin.table</span>(Titanic, <span class="at">margin=</span><span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">1</span>))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">prop.table</span>(<span class="fu">addmargins</span>(Titanic.margin, <span class="dv">2</span>), <span class="dv">2</span>), <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        Class
+Survived       1st       2nd       3rd      Crew       Sum
+     No  0.3753846 0.5859649 0.7478754 0.7604520 0.6769650
+     Yes 0.6246154 0.4140351 0.2521246 0.2395480 0.3230350
+     Sum 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(Titanic.margin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test
+
+data:  Titanic.margin
+X-squared = 190.4, df = 3, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcd)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaic</span>(Titanic.margin, <span class="at">shade=</span>T, <span class="at">legend=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="titanic_with_r_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="continue" class="level2">
+<h2 class="anchored" data-anchor-id="continue">Ⅳ. Continue</h2>
+<p>“많은 사람들이 가명으로 여행을 했고..<br>
+2008년 광범위한 DNA 검사와 전 세계적인 족보 검색 끝에<br>
+”알 수 없는 아이”라는 표시 아래 묻힌<br>
+19개월 소년 시드니 레슬리 굿윈이 확인되었다.”</p>
+<p>ㅡ <a href="https://www.greelane.com/ko/인문학/역사와-문화/titanic-timeline-1779210">타이타닉호의 처음이자 마지막 여정의 타임라인</a> 중에서</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
