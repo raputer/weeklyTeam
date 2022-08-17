@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="gbida">
 
-<title>Interview_the_Titanic</title>
+<title>Titanic Interview 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -81,16 +82,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<script src="titanic_with_r_files/libs/clipboard/clipboard.min.js"></script>
-<script src="titanic_with_r_files/libs/quarto-html/quarto.js"></script>
-<script src="titanic_with_r_files/libs/quarto-html/popper.min.js"></script>
-<script src="titanic_with_r_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="titanic_with_r_files/libs/quarto-html/anchor.min.js"></script>
-<link href="titanic_with_r_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="titanic_with_r_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="titanic_with_r_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="titanic_with_r_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="titanic_with_r_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="titanic_interview2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="titanic_interview2_files/libs/quarto-html/quarto.js"></script>
+<script src="titanic_interview2_files/libs/quarto-html/popper.min.js"></script>
+<script src="titanic_interview2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="titanic_interview2_files/libs/quarto-html/anchor.min.js"></script>
+<link href="titanic_interview2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="titanic_interview2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="titanic_interview2_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="titanic_interview2_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="titanic_interview2_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -103,13 +104,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Interview_the_Titanic</h1>
+<h1 class="title">Titanic Interview 2</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>gbida </p>
+          </div>
+  </div>
     
     
   </div>
@@ -129,8 +136,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Mackay-Bennett, Carpathis호로 인해 생존자들 뉴욕 도착(1912.4.18)</li>
 <li>타이타닉호의 잔해를 발견한 사람들ㅡDr.Robert Ballard 원정대(1985.9.1)</li>
 </ul>
-<p><code>때로는 결측값과 기록된 값의 차이를 만드는 것이 무엇인지 알고 싶은 경우가 있다. ㅡ R을 활용한 데이터 과학</code></p>
-<p>다양한 결측값 발생 원인들</p>
+<section id="다양한-결측값-발생-원인들" class="level4">
+<h4 class="anchored" data-anchor-id="다양한-결측값-발생-원인들">다양한 결측값 발생 원인들</h4>
+<pre><code>때로는 결측값과 기록된 값의 차이를 만드는 것이 무엇인지 알고 싶은 경우가 있다.  
+                                        ㅡ R을 활용한 데이터 과학</code></pre>
 <ul>
 <li>설문 응답자의 실수로 답변 누락</li>
 <li>민감한 질문에 대한 불응답</li>
@@ -138,6 +147,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>연구자 측에서의 잘못으로 누락</li>
 </ul>
 <hr>
+</section>
 </section>
 </section>
 <section id="data-preview" class="level2">
@@ -152,10 +162,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>나이는 연속형 자료지만 10, 20대처럼 연령대로 구분하면 범주형 중에서도 *순위척도가 될 수 있다.</p>
 <p>*순위척도 : 숫자라서 연속형 자료 같지만 평균을 내려고 하면 낼 수 없는 데이터<br>
+<br>
 예) 30대 연령 그룹이 존재하지 않는 데이터에서 20대 30명, 40대 30명이라고 해서 해당 데이터의 평균을 30대라고 할 수 없다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>titanic <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'titanic.csv'</span>, <span class="at">header =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(titanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>titanic <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'./data/titanic.csv'</span>, <span class="at">header =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(titanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   1309 obs. of  12 variables:
  $ PassengerId: int  1 2 3 4 5 6 7 8 9 10 ...
@@ -177,7 +188,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="b.-결측-데이터-처리-및-패턴-파악">b. 결측 데이터 처리 및 패턴 파악</h3>
 <p>Embarked 데이터 결측값(2개)과 Cabin 데이터 결측값(1014개)은 그대로 두어도 무방할 것 같아서 예측값을 채우지 않았다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(titanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(titanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  PassengerId      Survived          Pclass     
  Min.   :   1   Min.   :0.0000   Min.   :1.000  
@@ -213,26 +224,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  (Other)        : 271           </code></pre>
 </div>
 </div>
-<p>Fare 데이터 결측값(1개)은 동일한 조건(승선등급 3, 60.5세, 동반 탑승객 0, 남성)의 평균 요금으로 대체</p>
+<p><br>
+Fare 데이터 결측값(1개)은 동일한 조건의 평균 요금으로 대체<br>
+<br>
+- 승선등급 3<br>
+- 60.5세<br>
+_ 동반 탑승객 0<br>
+- 남성</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(<span class="fu">is.na</span>(titanic<span class="sc">$</span>Fare))  <span class="co"># 1044행</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(<span class="fu">is.na</span>(titanic<span class="sc">$</span>Fare))  <span class="co"># 1044행</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1044</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fare_condition <span class="ot">&lt;-</span> titanic[titanic<span class="sc">$</span>Pclass <span class="sc">==</span> <span class="dv">3</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>Age <span class="sc">&gt;=</span> <span class="dv">60</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>Age <span class="sc">&lt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>Sex <span class="sc">==</span> <span class="st">"male"</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>SibSp <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>Parch <span class="sc">==</span> <span class="dv">0</span>,]</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>fare_condition <span class="ot">&lt;-</span> fare_condition[<span class="fu">complete.cases</span>(fare_condition),]</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>titanic<span class="sc">$</span>Fare[<span class="dv">1044</span>] <span class="ot">&lt;-</span> <span class="fu">median</span>(fare_condition<span class="sc">$</span>Fare)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>titanic<span class="sc">$</span>Fare[<span class="dv">1044</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fare_condition <span class="ot">&lt;-</span> titanic[titanic<span class="sc">$</span>Pclass <span class="sc">==</span> <span class="dv">3</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>Age <span class="sc">&gt;=</span> <span class="dv">60</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>Age <span class="sc">&lt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>Sex <span class="sc">==</span> <span class="st">"male"</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>SibSp <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> titanic<span class="sc">$</span>Parch <span class="sc">==</span> <span class="dv">0</span>,]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>fare_condition <span class="ot">&lt;-</span> fare_condition[<span class="fu">complete.cases</span>(fare_condition),]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>titanic<span class="sc">$</span>Fare[<span class="dv">1044</span>] <span class="ot">&lt;-</span> <span class="fu">median</span>(fare_condition<span class="sc">$</span>Fare)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>titanic<span class="sc">$</span>Fare[<span class="dv">1044</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6.99375</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>VIM<span class="sc">::</span><span class="fu">aggr</span>(titanic, <span class="at">prop=</span><span class="cn">TRUE</span>, <span class="at">numbers=</span><span class="cn">TRUE</span>, <span class="at">sortVar=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>VIM<span class="sc">::</span><span class="fu">aggr</span>(titanic, <span class="at">prop=</span><span class="cn">TRUE</span>, <span class="at">numbers=</span><span class="cn">TRUE</span>, <span class="at">sortVar=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="titanic_with_r_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<p><img src="titanic_interview2_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -252,21 +269,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     Embarked 0.0000000</code></pre>
 </div>
 </div>
-<p>Cabin 데이터 결측값은 첫번째 항구였던 Cherbourg와 마지막 항구였던 Queenstown에서 많았다.<br>
+<p><br>
+Cabin 데이터 결측값은 첫번째 항구였던 Cherbourg와 마지막 항구였던 Queenstown에서 많았다.<br>
+<br>
 그러나 Cabin 데이터 결측값은 선원 또는 객실 승무원이 아니어서 그럴 가능성도 있다.</p>
 <p>당시 탑승 선원은 855명으로 추정, 그중 객실 승무원(스튜어드)은 322명, 여성 승무원 23명으로 기록</p>
 <p><a href="https://namu.wiki/w/RMS%20%ED%83%80%EC%9D%B4%ED%83%80%EB%8B%89">타이타닉 승무원</a> 나무위키 문서 참조</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>VIM<span class="sc">::</span><span class="fu">matrixplot</span>(titanic, <span class="at">sortby=</span><span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>VIM<span class="sc">::</span><span class="fu">matrixplot</span>(titanic, <span class="at">sortby=</span><span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="titanic_with_r_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<p><img src="titanic_interview2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Age 데이터 결측값 분포는 여자 &lt; 남자, Pclass = 3등급, 형제자매_SibSp = 0</p>
+<p><br>
+Age 데이터 결측값 분포<br>
+<br>
+- 여자 &lt; 남자<br>
+- Pclass = 3등급<br>
+- 형제자매_SibSp = 0</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>VIM<span class="sc">::</span><span class="fu">matrixplot</span>(titanic, <span class="at">sortby=</span><span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>VIM<span class="sc">::</span><span class="fu">matrixplot</span>(titanic, <span class="at">sortby=</span><span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="titanic_with_r_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="titanic_interview2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -276,11 +300,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 일반 사람의 범주가 아니라면?<br>
 데이터를 꼭 채워넣어야만 할까?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># library(mice)</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ini &lt;- mice(titanic, maxit=0)</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># meth &lt;- ini$method</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># meth["Age"] &lt;- "norm.predict"</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># imp &lt;- mice(titanic, method=meth)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># library(mice)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ini &lt;- mice(titanic, maxit=0)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># meth &lt;- ini$method</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># meth["Age"] &lt;- "norm.predict"</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># imp &lt;- mice(titanic, method=meth)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 </section>
@@ -292,9 +316,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Survived는 살았다, 아니다의 이분형 범주이어서 이항 로지스틱 회귀분석으로 분석 시도.<br>
 로지스틱 회귀분석은 결측 데이터를 자동으로 삭제한다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modeldata)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>titan.logis <span class="ot">&lt;-</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> <span class="sc">+</span> Sex <span class="sc">+</span> Embarked, <span class="at">data=</span>titanic, <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>))</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(titan.logis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modeldata)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>titan.logis <span class="ot">&lt;-</span> <span class="fu">glm</span>(Survived <span class="sc">~</span> <span class="sc">+</span> Sex <span class="sc">+</span> Embarked, <span class="at">data=</span>titanic, <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(titan.logis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -329,8 +353,8 @@ Number of Fisher Scoring iterations: 12</code></pre>
 <h3 class="anchored" data-anchor-id="b.-승객-구분에-따른-생존율-차이는-있다">b. 승객 구분에 따른 생존율 차이는 있다</h3>
 <p>생존여부와 승객 등급이라는 두 범주형 변수가 서로 관련이 있는지 교차분석(독립성검정) 해 본 결과 3등급과 승무원의 생존율이 낮았음을 알 수 있다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Titanic.margin <span class="ot">&lt;-</span> <span class="fu">margin.table</span>(Titanic, <span class="at">margin=</span><span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">1</span>))</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">prop.table</span>(<span class="fu">addmargins</span>(Titanic.margin, <span class="dv">2</span>), <span class="dv">2</span>), <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>Titanic.margin <span class="ot">&lt;-</span> <span class="fu">margin.table</span>(Titanic, <span class="at">margin=</span><span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">1</span>))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(<span class="fu">prop.table</span>(<span class="fu">addmargins</span>(Titanic.margin, <span class="dv">2</span>), <span class="dv">2</span>), <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        Class
 Survived       1st       2nd       3rd      Crew       Sum
@@ -338,7 +362,7 @@ Survived       1st       2nd       3rd      Crew       Sum
      Yes 0.6246154 0.4140351 0.2521246 0.2395480 0.3230350
      Sum 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(Titanic.margin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(Titanic.margin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's Chi-squared test
@@ -348,10 +372,10 @@ X-squared = 190.4, df = 3, p-value &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcd)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaic</span>(Titanic.margin, <span class="at">shade=</span>T, <span class="at">legend=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcd)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaic</span>(Titanic.margin, <span class="at">shade=</span>T, <span class="at">legend=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="titanic_with_r_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="titanic_interview2_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <hr>

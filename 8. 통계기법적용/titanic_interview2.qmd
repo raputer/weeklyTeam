@@ -1,6 +1,6 @@
 ---
-title: "Interview_the_Titanic"
-author: "gbida@github"
+title: "Titanic Interview 2"
+author: "gbida"
 format: html
 editor: visual
 ---
@@ -11,7 +11,7 @@ knitr::opts_chunk$set(warning = FALSE)
 knitr::opts_chunk$set(message = FALSE)
 ```
 
-## Ⅰ. Summary
+##  Ⅰ. Summary
 
 ### Story of the Titanic
 
@@ -23,9 +23,10 @@ knitr::opts_chunk$set(message = FALSE)
 -   Mackay-Bennett, Carpathis호로 인해 생존자들 뉴욕 도착(1912.4.18)
 -   타이타닉호의 잔해를 발견한 사람들ㅡDr.Robert Ballard 원정대(1985.9.1)
 
-`때로는 결측값과 기록된 값의 차이를 만드는 것이 무엇인지 알고 싶은 경우가 있다. ㅡ R을 활용한 데이터 과학`
+#### 다양한 결측값 발생 원인들
 
-다양한 결측값 발생 원인들
+    때로는 결측값과 기록된 값의 차이를 만드는 것이 무엇인지 알고 싶은 경우가 있다.  
+                                            ㅡ R을 활용한 데이터 과학
 
 -   설문 응답자의 실수로 답변 누락
 -   민감한 질문에 대한 불응답
@@ -34,7 +35,7 @@ knitr::opts_chunk$set(message = FALSE)
 
 ------------------------------------------------------------------------
 
-## Ⅱ. Data Preview
+##  Ⅱ. Data Preview
 
 ### a. 자료 유형 파악하기
 
@@ -46,14 +47,15 @@ knitr::opts_chunk$set(message = FALSE)
 나이는 연속형 자료지만 10, 20대처럼 연령대로 구분하면 범주형 중에서도 \*순위척도가 될 수 있다.
 
 \*순위척도 : 숫자라서 연속형 자료 같지만 평균을 내려고 하면 낼 수 없는 데이터\
+\
 예) 30대 연령 그룹이 존재하지 않는 데이터에서 20대 30명, 40대 30명이라고 해서 해당 데이터의 평균을 30대라고 할 수 없다.
 
 ```{r}
-titanic <- read.csv('titanic.csv', header = T, stringsAsFactors = T)
+titanic <- read.csv('./data/titanic.csv', header = T, stringsAsFactors = T)
 str(titanic)
 ```
 
-### b. 결측 데이터 처리 및 패턴 파악
+###  b. 결측 데이터 처리 및 패턴 파악
 
 Embarked 데이터 결측값(2개)과 Cabin 데이터 결측값(1014개)은 그대로 두어도 무방할 것 같아서 예측값을 채우지 않았다.
 
@@ -61,7 +63,13 @@ Embarked 데이터 결측값(2개)과 Cabin 데이터 결측값(1014개)은 그�
 summary(titanic)
 ```
 
-Fare 데이터 결측값(1개)은 동일한 조건(승선등급 3, 60.5세, 동반 탑승객 0, 남성)의 평균 요금으로 대체
+\
+Fare 데이터 결측값(1개)은 동일한 조건의 평균 요금으로 대체\
+\
+- 승선등급 3\
+- 60.5세\
+\_ 동반 탑승객 0\
+- 남성
 
 ```{r}
 which(is.na(titanic$Fare))  # 1044행
@@ -78,7 +86,9 @@ titanic$Fare[1044]
 VIM::aggr(titanic, prop=TRUE, numbers=TRUE, sortVar=TRUE)
 ```
 
+\
 Cabin 데이터 결측값은 첫번째 항구였던 Cherbourg와 마지막 항구였던 Queenstown에서 많았다.\
+\
 그러나 Cabin 데이터 결측값은 선원 또는 객실 승무원이 아니어서 그럴 가능성도 있다.
 
 당시 탑승 선원은 855명으로 추정, 그중 객실 승무원(스튜어드)은 322명, 여성 승무원 23명으로 기록
@@ -89,13 +99,18 @@ Cabin 데이터 결측값은 첫번째 항구였던 Cherbourg와 마지막 항�
 VIM::matrixplot(titanic, sortby=12)
 ```
 
-Age 데이터 결측값 분포는 여자 \< 남자, Pclass = 3등급, 형제자매_SibSp = 0
+\
+Age 데이터 결측값 분포\
+\
+- 여자 \< 남자\
+- Pclass = 3등급\
+- 형제자매_SibSp = 0
 
 ```{r}
 VIM::matrixplot(titanic, sortby=8)
 ```
 
-### c. 다중대체법 시뮬레이션?
+###  c. 다중대체법 시뮬레이션?
 
 익명을 원해서 일부러 기록을 피했다면?\
 일반 사람의 범주가 아니라면?\
@@ -111,7 +126,7 @@ VIM::matrixplot(titanic, sortby=8)
 
 ------------------------------------------------------------------------
 
-## Ⅲ. 생존에 영향을 미쳤던 변수들
+##  Ⅲ. 생존에 영향을 미쳤던 변수들
 
 ### a. 승선항은 생존 여부에 영향력이 있었다
 
@@ -124,7 +139,7 @@ titan.logis <- glm(Survived ~ + Sex + Embarked, data=titanic, family=binomial(li
 summary(titan.logis)
 ```
 
-### b. 승객 구분에 따른 생존율 차이는 있다
+###  b. 승객 구분에 따른 생존율 차이는 있다
 
 생존여부와 승객 등급이라는 두 범주형 변수가 서로 관련이 있는지 교차분석(독립성검정) 해 본 결과 3등급과 승무원의 생존율이 낮았음을 알 수 있다.
 
@@ -142,7 +157,7 @@ mosaic(Titanic.margin, shade=T, legend=T)
 
 ------------------------------------------------------------------------
 
-## Ⅳ. Continue
+##  Ⅳ. Continue
 
 "많은 사람들이 가명으로 여행을 했고..\
 2008년 광범위한 DNA 검사와 전 세계적인 족보 검색 끝에\
