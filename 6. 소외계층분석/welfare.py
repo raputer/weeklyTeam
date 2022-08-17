@@ -1,15 +1,8 @@
 # 국가별 저소득층 복지 분석을 위한 모듈
 
-"""scrap(url, xpath, tag, cls_name)
-Scrap by a given xpath or a html tag with class name
 
-[parameter]
-url : url address
-xpath : xpath value
-tag : html tag value
-cls_name : html tag's class name
-"""
 def scrap(url: str, xpath=None, tag=None, cls_name=None):
+	# xpath와 html tag, class name으로 웹크롤링
 	try:
 		from selenium import webdriver
 		from bs4 import BeautifulSoup
@@ -17,16 +10,18 @@ def scrap(url: str, xpath=None, tag=None, cls_name=None):
 		print(e)
 	try:
 		driver = webdriver.Chrome()
-	except FileNotFoundError as e:
-		print('cannot excute chrome broswer')
-		print(e)
+	except Exception:
+		print(Exception)
 	driver.get(url)
 	
+	# for naver
 	article_title = []
+	
+	# for youtube
 	video_title = []
 	video_view = []
 
-	# get youtube video title
+	# get title of youtube video
 	if xpath is not None:
 		driver.find_elements_by_xpath(xpath)
 		html = driver.page_source
@@ -37,15 +32,15 @@ def scrap(url: str, xpath=None, tag=None, cls_name=None):
 		driver.close()
 		return video_title
 	
+	# get headers of articles
 	elif tag is not None:
-		# get naver article headers
 		html = driver.page_source
 		bs = BeautifulSoup(html, 'html.parser')
 		contents = bs.findAll(tag, {'class': cls_name})
 		for a in contents:
 			article_title.append(a.text)
 
-		# get youtube video click view
+		# get click view of youtube video
 		# (조회수 33만회, 2개월) -> 33 
 		for info in contents:
 			info = info.text
@@ -57,15 +52,8 @@ def scrap(url: str, xpath=None, tag=None, cls_name=None):
 		return article_title, video_view
 
 
-"""mkWordCloud(context, except_kwrd, filename)
-Make WordCloud image
-
-[parameter]
-context : string list of text
-except_kwrd : keyword list has to be excepted from context
-filename : png file name
-"""
 def mkWordCloud(context=None, except_kwrd=None, filename='wcimg'):
+	# text 형태소 분석
 	try:
 		import matplotlib.pyplot as plt
 		import platform
@@ -75,15 +63,7 @@ def mkWordCloud(context=None, except_kwrd=None, filename='wcimg'):
 	except ModuleNotFoundError as e:
 		print(e)
 
-	# hangeul font path by OS
-	if platform.system() == 'Windows':
-		path = r'c:\Windows\Fonts\malgun.ttf'
-	elif platform.system() == 'Darwin':  # Mac
-		path = r'/System/Library/Fonts/AppleGothic'
-	else:  # Linux
-		path = r'/usr/share/fonts/truetype/name/NanumMyeongjo.ttf'
-
-	# extract keyword list except the search keyword
+	# 검색어를 제외한 명사, 형용사, 동사 키워드 추출
 	okt = Okt()
 	wordlist = []
 	for text in context:
@@ -94,9 +74,18 @@ def mkWordCloud(context=None, except_kwrd=None, filename='wcimg'):
 					if tag in ['Noun', 'Adjective', 'Verb']:
 						if key not in word:
 							wordlist.append(word)
+	# 빈도수 높은 30개의 단어 추출
 	frequency = Counter(wordlist).most_common(30)
 
-	# save and display wordcloud image
+	# 그래프 출력을 위한 운영체제별 한글 폰트 설정
+	if platform.system() == 'Windows':
+		path = r'c:\Windows\Fonts\malgun.ttf'
+	elif platform.system() == 'Darwin':
+		path = r'/System/Library/Fonts/AppleGothic'
+	else:  # Linux
+		path = r'/usr/share/fonts/truetype/name/NanumMyeongjo.ttf'
+
+	# wordcloud 이미지 파일 저장 및 출력
 	wc = WordCloud(font_path=path)
 	wc = wc.generate_from_frequencies(dict(frequency))
 	wc.to_file(f'{filename}.png')
@@ -108,18 +97,8 @@ def mkWordCloud(context=None, except_kwrd=None, filename='wcimg'):
 	plt.close()
 
 
-"""sendQuery(csv_file, hostname, username, passwd, dbname, table_name)
-Send queries to database by csv file
-
-[parameter]
-csv_file : [csv file path + ] csv file name
-hostname : database host name 
-username : database user name
-passwd database password
-dbname : database name
-tbname : database table name
-"""
 def sendQuery(csv_file, hostname, username, passwd, dbname, tbname):
+	# MySQL database에 query 업데이트
 	try:
 		import pymysql
 		import csv
@@ -127,7 +106,6 @@ def sendQuery(csv_file, hostname, username, passwd, dbname, tbname):
 	except ModuleNotFoundError as e:
 		print(e)
 
-	# open and read csv data
 	file = open(csv_file, mode='r', encoding='utf-8')
 	data = csv.reader(file)
 	header = next(data)
@@ -138,11 +116,9 @@ def sendQuery(csv_file, hostname, username, passwd, dbname, tbname):
 	db = conn.cursor(pymysql.cursors.DictCursor)
 	db.execute('USE '+dbname)
 	
-	# send <insert into ~ values> queries
+	# send "insert" query to database and close
 	if db.rowcount == 0:
 		for row in data:
-			row = str(row).lstrip('[')
-			row = row.rstrip(']')
 			db.execute('set foreign_key_checks=0')
 			try:
 				db.execute(f'INSERT INTO {tbname}({", ".join(header)}) VALUES ({row})')
@@ -158,28 +134,24 @@ def sendQuery(csv_file, hostname, username, passwd, dbname, tbname):
 	conn.close()
 
 
-"""getData(hostname, username, passwd, dbname, tbname)
-Get data from database and return pandas DataFrame object
-
-[parameter]
-hostname : database host name
-username : database user name
-passwd : database password
-dbname : database name
-tbame : database table name
-"""
 def getData(hostname, username, passwd, dbname, tbname):
+	# get data from MySQL database
 	try:
 		import pandas as pd
 		import pymysql
 	except ModuleNotFoundError as e:
 		print(e)
 
+	# connect to database
 	conn = pymysql.connect(host=hostname, user=username,
 						   password=passwd, database=dbname, charset='utf8')
 	db = conn.cursor(pymysql.cursors.DictCursor)
-	db.execute('USE '+dbname)
+
+	# execute query
+	db.execute('USE ' + dbname)
 	db.execute(f'SELECT * FROM {tbname}')
+
+	# get data and close
 	data = db.fetchall()
 	data = pd.DataFrame(data)
 	db.close()
@@ -187,17 +159,8 @@ def getData(hostname, username, passwd, dbname, tbname):
 	return data
 
 
-"""plotGraph(data, title, xlabel, ylabel, filename)
-Show plot graph and save a png file
-
-[parameter]
-data : pandas DataFrame object
-title : title on a plot graph
-xlabel : xlabel on a plot graph
-ylabel : ylabel on a plot graph
-filename : img file name for save
-"""
 def plotGraph(data, title: str, xlabel: str, ylabel: str, filename: str):
+	# make graph
 	try:
 		import platform
 		import matplotlib.pyplot as plt
@@ -224,7 +187,7 @@ def plotGraph(data, title: str, xlabel: str, ylabel: str, filename: str):
 	plt.ylabel(ylabel, size=15)
 	plt.legend(data.index, loc=2)
 
-	# save a img file, show and close the plot
+	# save an img file, show and close the plot
 	plt.savefig(f'{filename}', dpi=200)
 	plt.show()
 	plt.close()

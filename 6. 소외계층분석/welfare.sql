@@ -1,6 +1,5 @@
--- Active: 1659007754281@@127.0.0.1@3306
-
 CREATE DATABASE welfare;
+
 USE welfare;
 
 CREATE TABLE welfare.global_income (
