@@ -1,0 +1,145 @@
+---
+title: "Titanic Data Analysis with R"
+author: "Lahee Kim"
+date: "2022-08-08"
+output:
+  html_document: default
+  pdf_document: default
+---
+</br>
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+```
+</br></br>
+
+## Goal
+
+missing value를 제외한 분석 결과와 missing value를 채워서 분석한 결과에 차이가 있는지 확인해서 유실된 데이터의 값을 찾아내는 것 또는 그것을 추정하는 것이 의미있는지 알아보려고 합니다.
+</br></br>
+
+## Prepare
+
+타이타닉의 \<train\> dataset은 891행 12열로 승객ID, 생존여부, 승선등급, 이름, 성별, 나이, 가족여부, 티켓종류, 요금, cabin, 승선지 데이터가 들어있습니다. 
+
+```{r}
+titanic <- read.csv('./data/titanic/train.csv', header = T, stringsAsFactors = T)
+str(titanic)
+```
+
+</br>
+summary를 통해 Age, Cabin, Embarked 데이터에 NA(결측치)가 있는 것을 알 수 있습니다.
+
+```{r}
+summary(titanic)
+```
+
+</br>
+NA가 아닌 "" 같은 빈 문자열이 있는 경우에는 describe 함수에서 부족한 행의 라인수로 결측치가 있음을 확인할 수 없습니다.
+
+```{r}
+psych::describe(titanic)
+```
+</br>
+
+### 결측치 분포 그래프
+
+```{r}
+VIM::aggr(titanic, numbers = T, prop = F, sortVars = T)
+```
+
+</br>
+Cabin, Embarked 데이터의 빈 문자열 "" 을 NA로 바꿉니다.
+
+```{r}
+titanic$Cabin[titanic$Cabin == ""] <- NA
+titanic$Embarked[titanic$Embarked == ""] <- NA
+sum(is.na(titanic$Cabin))
+sum(is.na(titanic$Embarked))
+```
+
+</br></br>
+
+## Start
+
+### 1. Age 결측 데이터를 제외하고 714명에 대한 연령별 생존 분포
+
+```{r}
+# 결측 데이터 제외 후 factor value를 numeric으로 변환
+titanic2 <- na.omit(titanic)
+class(titanic$Age)
+
+# 연령대 생성
+titanic2 <- transform(titanic2, 
+                      Ages = cut(titanic2$Age,
+                                 breaks = c(0.42, 10.00, 20.00, 30.00, 40.00, 50.00, 60.00, 70.00, 80.00),
+                                 include.lowest = TRUE,
+                                 right = FALSE,
+                                 labels = c("0~9", "10's", "20's", "30's", "40's", "50's", "60's", "70's")))
+
+# 연령대별 생존자수
+mosaicplot(Ages ~ Survived, data = titanic2,
+           color = c("whitesmoke", "tomato"),
+           main = "연령별 생존자",
+           xlab = "연령대",
+           ylab = "생존여부(1: 생존/ 0: 사망)")
+```
+
+
+### 2. 잃어버린 값을 추측해보기
+
+nanny와 함께 탑승한 일부 어린이들은 parch 데이터에 0으로 기록 되었다고 나옵니다.
+
+나이가 비어있는 사람 중에 SibSp와 parch 기록이 0이라면 어린 나이로 추정해볼 수 있습니다. 그런데 Chibnall, Mrs. (Edith Martha Bowerman)나 Lurette, Miss. Elise처럼 가족이 없는데 1등급이고 지불요금이 상당한데다 Cabin이었던 사람들 중 나이 기록이 비어있는 경우가 있습니다.
+
+따라서 나이를 추정해볼 수 있는 관련 요인으로 Cabin, SibSp, parch, 요금, 성별, 승선등급 총 6가지 정도의 기록과 비교해서 동일 그룹을 찾아 해당 그룹의 평균값으로 잃어버린 데이터를 채워서 전체 승객의 연령별 생존 비율을 제대로 구해보면 좋을 것 같습니다.
+</br>
+```{r echo=FALSE, fig.cap="Variable-Notes", fig.align="center", out.width="50%"}
+knitr::include_graphics("./img/titanic_variable_notes.png")
+```
+
+남자 선원과 여자 선원의 평균 나이 38세, 33세
+
+```{r}
+maleCabin <- titanic[(titanic$Cabin != "") & (titanic$Sex == 'male'), ]
+maleAvg <- mean(maleCabin$Age, na.rm=T)
+maleAvg
+
+femaleCabin <- titanic[(titanic$Cabin != "") & (titanic$Sex == 'female'), ]
+femaleAvg <- mean(femaleCabin$Age, na.rm=T)
+femaleAvg
+```
+
+</br>
+나이 기록이 유실된 사람들의 승선지 중 가장 많았던 순서는 Southampton > Cherourg > Queenstown
+
+```{r}
+table(titanic[!titanic$Age == "NA", "Embarked"])
+barplot(table(titanic[!titanic$Age == "NA", "Embarked"]),
+        main = "나이 기록 유실이 많았던 승선지",
+        xlab = "Embarked")
+```
+</br>
+승선 등급에서는 3 > 1 > 2등급 순으로 나이 기록이 없었습니다.
+
+```{r}
+ageMissing <- titanic[!complete.cases(titanic$Age), ]
+barplot(table(ageMissing$Pclass),
+        main = "나이 기록 유실이 가장 많았던 승선 등급",
+        xlab = "Pclass",
+        col = c("whitesmoke", "whitesmoke", "tomato"))
+```
+</br>
+동승자가 없는데 승선 요금이 비싸고 1등급일 경우 연령대가 높을 수 있다고 생각해 볼 수 있습니다.
+
+```{r}
+max_fare <- max(ageMissing$Fare)
+which(ageMissing$Fare == max_fare)
+ageMissing[115, ]
+```
+</br>
+## End
+
+<b>Q. 누락 데이터를 제외하고 얻은 분석 결과와 누락 데이터를 채운 분석 결과에 차이가 있었는지?</b>
+</br></br>
