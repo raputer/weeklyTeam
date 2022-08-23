@@ -17,7 +17,7 @@ library(tidyverse)
 hrbrthemes::import_roboto_condensed()
 
 # Load dataset
-harbor <- read.csv('data/harbor.csv')
+harbor <- read.csv('./data/harbor.csv')
 
 # Lollipop Graph
 total <- subset(harbor, Measures=='총계', select=-합계)
